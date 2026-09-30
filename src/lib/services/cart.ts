@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { and, asc, eq, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { cartItems, carts, customers, deliveryZones, products, type SelectedOption } from "@/lib/db/schema";
-import { UserError } from "@/lib/actions";
+import { UserError } from "@/lib/errors";
 import { getCurrentUser } from "@/lib/auth/session";
 import { calculatePricing, optionsKey, quantityProblem } from "@/lib/pricing";
 import { getSettings } from "@/lib/settings";

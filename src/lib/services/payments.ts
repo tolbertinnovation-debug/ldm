@@ -2,7 +2,7 @@ import "server-only";
 import { and, eq, or, sql } from "drizzle-orm";
 import { db, type DbOrTx } from "@/lib/db";
 import { customers, invoices, orderEvents, orders, payments } from "@/lib/db/schema";
-import { UserError } from "@/lib/actions";
+import { UserError } from "@/lib/errors";
 import { randomCode } from "@/lib/crypto";
 import { kickJobs } from "@/lib/jobs/queue";
 import { sendTemplate } from "@/lib/messaging";

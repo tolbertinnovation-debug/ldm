@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, startTransition, useActionState, useContext, useEffect, useId, useRef, type ComponentProps, type FormEvent, type ReactNode } from "react";
+import { createContext, startTransition, useActionState, useContext, useEffect, useId, useRef, useTransition, type ComponentProps, type FormEvent, type ReactNode } from "react";
 import { useFormStatus } from "react-dom";
 import { useRouter } from "next/navigation";
 import { buttonClass, cn } from "./ui";
@@ -49,7 +49,18 @@ export function Form({
   id?: string;
   confirm?: string;
 }) {
-  const [state, formAction, pending] = useActionState(action, { ok: false });
+  // Toasts fire from the action wrapper (not an effect) so feedback still shows
+  // when the form unmounts because the page changed, e.g. a delivered order card.
+  const wrapped = async (prev: ActionState, fd: FormData) => {
+    const res = await action(prev, fd);
+    if (res?.ok) {
+      if (toastOnSuccess && res.message) toast.success(res.message);
+    } else if (res?.error && !res.fieldErrors) {
+      toast.error(res.error);
+    }
+    return res;
+  };
+  const [state, formAction, pending] = useActionState(wrapped, { ok: false });
   const ref = useRef<HTMLFormElement>(null);
   const router = useRouter();
   const lastNonce = useRef<number | undefined>(undefined);
@@ -58,14 +69,11 @@ export function Form({
     if (!state.nonce || state.nonce === lastNonce.current) return;
     lastNonce.current = state.nonce;
     if (state.ok) {
-      if (toastOnSuccess && state.message) toast.success(state.message);
       if (resetOnSuccess) ref.current?.reset();
       if (refresh) router.refresh();
       onSuccess?.(state);
-    } else if (state.error && !state.fieldErrors) {
-      toast.error(state.error);
     }
-  }, [state, toastOnSuccess, resetOnSuccess, onSuccess, refresh, router]);
+  }, [state, resetOnSuccess, onSuccess, refresh, router]);
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -215,7 +223,11 @@ export function Spinner({ className }: { className?: string }) {
   );
 }
 
-/** Small inline form for one-click actions (e.g. "Mark paid"). */
+/**
+ * One-click action button (e.g. "Confirm order", "Mark paid"). Calls the server
+ * action directly so feedback still shows when the button itself disappears
+ * after the page updates.
+ */
 export function ActionButton({
   action,
   children,
@@ -235,12 +247,30 @@ export function ActionButton({
   className?: string;
   pendingText?: string;
 }) {
+  const [pending, startActionTransition] = useTransition();
+  const router = useRouter();
+  function run() {
+    if (confirm && !window.confirm(confirm)) return;
+    const fd = new FormData();
+    for (const [k, v] of Object.entries(fields ?? {})) fd.append(k, v);
+    startActionTransition(async () => {
+      try {
+        const res = await action({ ok: false }, fd);
+        if (res?.ok) {
+          if (res.message) toast.success(res.message);
+          router.refresh();
+        } else if (res?.error) toast.error(res.error);
+      } catch (err) {
+        // redirect() inside the action surfaces here as a navigation; anything else is a real error
+        if (err && typeof err === "object" && "digest" in err && String((err as { digest: string }).digest).startsWith("NEXT_REDIRECT")) throw err;
+        toast.error("Something went wrong. Please try again.");
+      }
+    });
+  }
   return (
-    <Form action={action} confirm={confirm} className="inline">
-      {fields && Object.entries(fields).map(([k, v]) => <input key={k} type="hidden" name={k} value={v} />)}
-      <SubmitButton variant={variant} size={size} className={className} pendingText={pendingText}>
-        {children}
-      </SubmitButton>
-    </Form>
+    <button type="button" onClick={run} disabled={pending} aria-busy={pending} className={buttonClass(variant, size, className)}>
+      {pending && <Spinner />}
+      {pending && pendingText ? pendingText : children}
+    </button>
   );
 }

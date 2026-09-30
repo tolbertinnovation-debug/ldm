@@ -16,7 +16,7 @@ import {
   type AddressSnapshot,
   type SelectedOption,
 } from "@/lib/db/schema";
-import { UserError } from "@/lib/actions";
+import { UserError } from "@/lib/errors";
 import { formatMoney, lineTotal } from "@/lib/money";
 import { canTransition, paymentStatusFor } from "@/lib/order-status";
 import { calculatePricing, quantityProblem, type PricingLine, type PromotionRule } from "@/lib/pricing";

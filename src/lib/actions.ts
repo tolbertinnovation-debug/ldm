@@ -16,15 +16,8 @@ export type ActionState = {
 
 export const initialActionState: ActionState = { ok: false };
 
-export class UserError extends Error {
-  constructor(
-    message: string,
-    public fieldErrors?: Record<string, string>,
-  ) {
-    super(message);
-    this.name = "UserError";
-  }
-}
+export { UserError } from "./errors";
+import { UserError } from "./errors";
 
 export function ok(message?: string, data?: Record<string, unknown>): ActionState {
   return { ok: true, message, data, nonce: Date.now() };

@@ -2,7 +2,7 @@ import "server-only";
 import { and, eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { orders, payments } from "@/lib/db/schema";
-import { UserError } from "@/lib/actions";
+import { UserError } from "@/lib/errors";
 import { enqueue, kickJobs } from "@/lib/jobs/queue";
 import { flutterwaveCheckout, flutterwaveConfigured, flutterwaveVerify, momoConfigured, momoRequestToPay, momoStatus } from "@/lib/payments/gateways";
 import { normalizePhone } from "@/lib/phone";

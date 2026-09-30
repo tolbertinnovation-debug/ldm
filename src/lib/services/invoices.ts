@@ -2,7 +2,7 @@ import "server-only";
 import { and, eq, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { customers, invoiceItems, invoices, orderItems, orders } from "@/lib/db/schema";
-import { UserError } from "@/lib/actions";
+import { UserError } from "@/lib/errors";
 import { sendTemplate } from "@/lib/messaging";
 import { firstName } from "@/lib/messaging/templates";
 import { formatMoney, lineTotal, percentOf } from "@/lib/money";

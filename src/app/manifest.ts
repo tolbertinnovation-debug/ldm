@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 import { getSettings } from "@/lib/settings";
 
+export const dynamic = "force-dynamic";
+
 export default async function manifest(): Promise<MetadataRoute.Manifest> {
   const { business } = await getSettings();
   return {

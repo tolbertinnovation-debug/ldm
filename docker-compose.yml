@@ -1,0 +1,58 @@
+# One-command deployment: Postgres + web app + background worker.
+#   cp .env.example .env   # then edit APP_URL, APP_SECRET, CRON_SECRET, providers
+#   docker compose up -d --build
+#   docker compose run --rm migrate          # first time (and after upgrades)
+#   docker compose run --rm migrate npm run create-admin -- --email you@example.org --name "You" --password "..."
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: reap
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-reap-change-me}
+      POSTGRES_DB: reap
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U reap"]
+      interval: 5s
+      retries: 10
+
+  migrate:
+    build: .
+    profiles: ["tools"]
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://reap:${POSTGRES_PASSWORD:-reap-change-me}@db:5432/reap
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["npm", "run", "db:migrate"]
+
+  web:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://reap:${POSTGRES_PASSWORD:-reap-change-me}@db:5432/reap
+      NODE_ENV: production
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  worker:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://reap:${POSTGRES_PASSWORD:-reap-change-me}@db:5432/reap
+      NODE_ENV: production
+    command: ["npm", "run", "worker"]
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
