@@ -44,3 +44,11 @@ export function formatNumber(n: number, digits = 0) {
 export function todayInTz() {
   return new Intl.DateTimeFormat("en-CA", { timeZone: DISPLAY_TZ }).format(new Date());
 }
+
+/** "opposite Total station" stays as-is; "Total station" becomes "Near Total station". */
+export function landmarkText(landmark: string | null | undefined) {
+  if (!landmark) return "";
+  return /^(near|by|opposite|behind|next to|across|beside|in front of|close to)\b/i.test(landmark.trim())
+    ? landmark.trim().replace(/^./, (c) => c.toUpperCase())
+    : `Near ${landmark.trim()}`;
+}

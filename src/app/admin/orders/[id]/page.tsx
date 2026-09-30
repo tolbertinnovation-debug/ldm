@@ -8,7 +8,7 @@ import { requireStaff } from "@/lib/auth/session";
 import { can } from "@/lib/auth/permissions";
 import { getSettings } from "@/lib/settings";
 import { centsToInput, formatMoney } from "@/lib/money";
-import { formatDate, formatDateTime } from "@/lib/format";
+import { formatDate, formatDateTime, landmarkText } from "@/lib/format";
 import { formatPhone, whatsappLink } from "@/lib/phone";
 import { allowedTransitions } from "@/lib/order-status";
 import { appUrl } from "@/lib/request";
@@ -182,7 +182,7 @@ export default async function OrderDetailPage(props: PageProps<"/admin/orders/[i
                     <div>
                       <p className="font-medium">{addr.line1}</p>
                       <p className="text-muted">{[addr.area, addr.city].filter(Boolean).join(", ")}</p>
-                      {addr.landmark && <p className="text-muted">Near {addr.landmark}</p>}
+                      {addr.landmark && <p className="text-muted">{landmarkText(addr.landmark)}</p>}
                       <p className="text-muted">Zone: {zone?.name ?? "—"}</p>
                     </div>
                   </div>

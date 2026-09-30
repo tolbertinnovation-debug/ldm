@@ -17,6 +17,7 @@ import { DEFAULT_SETTINGS } from "../src/lib/settings";
 import { hashPassword } from "../src/lib/auth/password";
 import { calculatePricing } from "../src/lib/pricing";
 import { lineTotal } from "../src/lib/money";
+import { ORDER_STATUS_META } from "../src/lib/constants";
 
 // Deterministic PRNG so demo data is stable between runs.
 let seed = 20260928;
@@ -493,7 +494,7 @@ async function main() {
     );
     await db.insert(s.orderEvents).values({ orderId: order!.id, type: "STATUS", status: "PENDING", message: "Order placed", isPublic: true, createdAt });
     if (status !== "PENDING") {
-      await db.insert(s.orderEvents).values({ orderId: order!.id, type: "STATUS", status, message: status === "COMPLETED" ? (fulfillmentType === "DELIVERY" ? "Delivered" : "Picked up") : status.replace(/_/g, " ").toLowerCase(), isPublic: true, actorId: salesUser.id, createdAt: new Date(createdAt.getTime() + 3 * 3600_000) });
+      await db.insert(s.orderEvents).values({ orderId: order!.id, type: "STATUS", status, message: status === "COMPLETED" ? (fulfillmentType === "DELIVERY" ? "Delivered" : "Picked up") : ORDER_STATUS_META[status].label, isPublic: true, actorId: salesUser.id, createdAt: new Date(createdAt.getTime() + 3 * 3600_000) });
     }
     if (fulfillmentType === "DELIVERY") {
       const driver = pick(drivers);

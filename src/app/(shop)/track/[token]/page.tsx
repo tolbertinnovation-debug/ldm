@@ -14,7 +14,7 @@ import { Alert, Badge, Card, cn } from "@/components/ui";
 import { AutoRefresh } from "@/components/auto-refresh";
 import { PayForm } from "@/components/shop/track-forms";
 import { SocialIcon } from "@/components/shop/visuals";
-import { formatDateTime } from "@/lib/format";
+import { formatDateTime, landmarkText } from "@/lib/format";
 
 export const metadata = { title: "Order status", robots: { index: false } };
 
@@ -117,7 +117,7 @@ export default async function OrderTrackingPage(props: PageProps<"/track/[token]
               <h2 className="flex items-center gap-2 font-semibold"><Truck className="h-4 w-4 text-primary" aria-hidden /> Delivery</h2>
               <p className="mt-2 text-sm">{order.deliveryAddress?.line1}</p>
               <p className="text-sm text-muted">{[order.deliveryAddress?.area, zone?.name].filter(Boolean).join(" · ")}</p>
-              {order.deliveryAddress?.landmark && <p className="text-sm text-muted">Near {order.deliveryAddress.landmark}</p>}
+              {order.deliveryAddress?.landmark && <p className="text-sm text-muted">{landmarkText(order.deliveryAddress.landmark)}</p>}
               {(order.scheduledDate || order.timeSlot) && (
                 <p className="mt-2 flex items-center gap-1.5 text-sm"><Clock className="h-4 w-4 text-muted" aria-hidden /> {[order.scheduledDate, order.timeSlot].filter(Boolean).join(", ")}</p>
               )}

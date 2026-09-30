@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   BarChart3, Boxes, CalendarDays, ClipboardList, FileText, Inbox, LayoutDashboard, LineChart, Megaphone, Menu, PiggyBank, Plus, Receipt,
   ScrollText, Send, Settings, Share2, ShieldCheck, ShoppingCart, Tag, Truck, Users, UserCog, Wallet, X, Package, type LucideIcon,
@@ -72,8 +72,6 @@ export function AdminSidebar({ groups, business }: { groups: NavGroup[]; busines
 
 export function MobileAdminNav({ groups, business }: { groups: NavGroup[]; business: string }) {
   const [open, setOpen] = useState(false);
-  const path = usePathname();
-  useEffect(() => setOpen(false), [path]);
   return (
     <>
       <button onClick={() => setOpen(true)} className="grid h-10 w-10 place-items-center rounded-xl text-fg hover:bg-surface-2 lg:hidden" aria-label="Open menu">

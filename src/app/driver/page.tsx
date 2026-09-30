@@ -5,7 +5,7 @@ import { deliveries, deliveryZones, orderItems, orders } from "@/lib/db/schema";
 import { requireStaff } from "@/lib/auth/session";
 import { getSettings } from "@/lib/settings";
 import { centsToInput, formatMoney } from "@/lib/money";
-import { formatDate } from "@/lib/format";
+import { formatDate, landmarkText } from "@/lib/format";
 import { formatPhone, whatsappLink } from "@/lib/phone";
 import { DELIVERY_STATUS_META, formatQuantity } from "@/lib/constants";
 import { AutoRefresh } from "@/components/auto-refresh";
@@ -75,7 +75,7 @@ export default async function DriverPage() {
                 <div>
                   <p className="font-semibold">{o.contactName}</p>
                   <p className="flex gap-1.5 text-sm"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden />{[a?.line1, a?.area].filter(Boolean).join(", ")}</p>
-                  {a?.landmark && <p className="pl-5 text-sm text-muted">Near {a.landmark}</p>}
+                  {a?.landmark && <p className="pl-5 text-sm text-muted">{landmarkText(a.landmark)}</p>}
                 </div>
                 <div className="grid grid-cols-3 gap-2 text-sm font-semibold">
                   <a href={`tel:${o.contactPhone}`} className="flex items-center justify-center gap-1.5 rounded-xl bg-surface-2 py-2.5"><Phone className="h-4 w-4" aria-hidden /> Call</a>

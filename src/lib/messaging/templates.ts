@@ -122,7 +122,6 @@ export function firstName(name: string | null | undefined) {
 
 /** SMS segments (GSM-7 160 chars / UCS-2 70 chars) — shown in the composer. */
 export function smsSegments(text: string) {
-  // eslint-disable-next-line no-control-regex
   const gsm = /^[\x0A\x0D\x20-\x7E£¥èéùìòÇØøÅåΔ_ΦΓΛΩΠΨΣΘΞÆæßÉ¡ÄÖÑÜ§¿äöñüà€]*$/.test(text);
   const single = gsm ? 160 : 70;
   const multi = gsm ? 153 : 67;
