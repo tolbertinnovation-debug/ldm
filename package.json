@@ -16,12 +16,12 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "tsx scripts/migrate.ts",
-    "db:seed": "tsx scripts/seed.ts",
-    "db:reset": "tsx scripts/reset.ts && npm run db:migrate && npm run db:seed",
+    "db:migrate": "tsx --conditions=react-server scripts/migrate.ts",
+    "db:seed": "tsx --conditions=react-server scripts/seed.ts",
+    "db:reset": "tsx --conditions=react-server scripts/reset.ts && npm run db:migrate && npm run db:seed",
     "db:studio": "drizzle-kit studio",
-    "worker": "tsx scripts/worker.ts",
-    "create-admin": "tsx scripts/create-admin.ts"
+    "worker": "tsx --conditions=react-server scripts/worker.ts",
+    "create-admin": "tsx --conditions=react-server scripts/create-admin.ts"
   },
   "dependencies": {
     "clsx": "^2.1.1",
