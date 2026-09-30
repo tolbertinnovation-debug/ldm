@@ -1,0 +1,218 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   REAP design tokens
+   Brand: forest green (growth, farming) + harvest amber (sun, produce)
+   Semantic tokens switch automatically for dark mode.
+--------------------------------------------------------------------------- */
+
+:root {
+  --bg: #faf8f3;
+  --surface: #ffffff;
+  --surface-2: #f4f1ea;
+  --surface-3: #ebe6db;
+  --fg: #1c1917;
+  --muted: #6b645c;
+  --subtle: #938b80;
+  --border: #e7e2d8;
+  --border-strong: #d4ccbe;
+  --primary: #1d5531;
+  --primary-hover: #163f25;
+  --primary-fg: #ffffff;
+  --primary-soft: #e3f1e6;
+  --primary-soft-fg: #1d5531;
+  --accent: #f0820f;
+  --accent-soft: #feefd6;
+  --accent-soft-fg: #8f3411;
+  --success-soft: #dcf2e3;
+  --success-fg: #17613a;
+  --warning-soft: #fdf1cf;
+  --warning-fg: #855b07;
+  --danger: #c2321f;
+  --danger-soft: #fbe3de;
+  --danger-fg: #9b2615;
+  --info-soft: #e1ecfb;
+  --info-fg: #1f4f96;
+  --shadow-color: 30 25 15;
+  --chart-1: #2f7f4b;
+  --chart-2: #f0820f;
+  --chart-3: #3b6fc4;
+  --chart-4: #b84a8a;
+  --chart-5: #8a7d20;
+  --chart-grid: #ebe6db;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e1310;
+    --surface: #151b17;
+    --surface-2: #1b231e;
+    --surface-3: #232d27;
+    --fg: #eaeee9;
+    --muted: #a1aba3;
+    --subtle: #7d877f;
+    --border: #28322c;
+    --border-strong: #37433b;
+    --primary: #5fb07b;
+    --primary-hover: #7cc394;
+    --primary-fg: #08170e;
+    --primary-soft: #1a3324;
+    --primary-soft-fg: #9ed6b0;
+    --accent: #f9a224;
+    --accent-soft: #3a2a12;
+    --accent-soft-fg: #fbc97a;
+    --success-soft: #16301f;
+    --success-fg: #86d19f;
+    --warning-soft: #33290f;
+    --warning-fg: #f1ca6b;
+    --danger: #f0705d;
+    --danger-soft: #3a1a15;
+    --danger-fg: #f6a597;
+    --info-soft: #172640;
+    --info-fg: #9dbdf0;
+    --shadow-color: 0 0 0;
+    --chart-1: #5fb07b;
+    --chart-2: #f9a224;
+    --chart-3: #7ea6ec;
+    --chart-4: #e07db8;
+    --chart-5: #c9b94a;
+    --chart-grid: #26302a;
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-fg: var(--primary-fg);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-soft-fg: var(--primary-soft-fg);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-soft-fg: var(--accent-soft-fg);
+  --color-success-soft: var(--success-soft);
+  --color-success-fg: var(--success-fg);
+  --color-warning-soft: var(--warning-soft);
+  --color-warning-fg: var(--warning-fg);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-danger-fg: var(--danger-fg);
+  --color-info-soft: var(--info-soft);
+  --color-info-fg: var(--info-fg);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@theme {
+  --color-brand-50: #eef7f0;
+  --color-brand-100: #d6ecdb;
+  --color-brand-200: #aed8b9;
+  --color-brand-300: #7dbd90;
+  --color-brand-400: #4f9d68;
+  --color-brand-500: #2f7f4b;
+  --color-brand-600: #226a3c;
+  --color-brand-700: #1d5531;
+  --color-brand-800: #1a4429;
+  --color-brand-900: #163823;
+  --color-brand-950: #0b1f13;
+  --color-harvest-100: #feecc7;
+  --color-harvest-300: #fbbb4d;
+  --color-harvest-400: #f9a224;
+  --color-harvest-500: #f0820f;
+  --color-harvest-600: #d45f0a;
+  --shadow-card: 0 1px 2px rgb(var(--shadow-color) / 0.05), 0 1px 3px rgb(var(--shadow-color) / 0.06);
+  --shadow-lift: 0 4px 10px -2px rgb(var(--shadow-color) / 0.08), 0 12px 32px -8px rgb(var(--shadow-color) / 0.14);
+  --animate-fade-in: fade-in 0.18s ease-out;
+  --animate-slide-up: slide-up 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+  --animate-slide-in-left: slide-in-left 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slide-in-left {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-feature-settings: "cv11", "ss01";
+    text-rendering: optimizeLegibility;
+  }
+  :focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+  ::selection {
+    background: var(--primary-soft);
+    color: var(--primary-soft-fg);
+  }
+  input[type="number"]::-webkit-inner-spin-button {
+    opacity: 0.4;
+  }
+  dialog::backdrop {
+    background: rgb(10 15 12 / 0.5);
+    backdrop-filter: blur(2px);
+  }
+}
+
+@layer components {
+  .field {
+    @apply block w-full rounded-lg border border-border bg-surface px-3 py-2 text-[15px] text-fg shadow-[inset_0_1px_1px_rgb(var(--shadow-color)/0.04)] outline-none transition placeholder:text-subtle focus:border-primary focus:ring-3 focus:ring-primary/15 disabled:cursor-not-allowed disabled:opacity-60 sm:text-sm;
+  }
+  .field[aria-invalid="true"] {
+    @apply border-danger focus:ring-danger/15;
+  }
+  .card {
+    @apply rounded-2xl border border-border bg-surface shadow-card;
+  }
+  .link {
+    @apply font-medium text-primary underline-offset-4 hover:underline;
+  }
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .print-plain {
+    box-shadow: none !important;
+    border: none !important;
+  }
+}
